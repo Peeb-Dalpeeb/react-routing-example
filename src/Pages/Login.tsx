@@ -6,6 +6,29 @@ import { useNavigate } from 'react-router-dom';
 const MOCK_USERNAME = 'admin';
 const MOCK_PASSWORD = 'password123';
 
+const userDb = [
+  {
+    username: MOCK_USERNAME,
+    password: MOCK_PASSWORD,
+  },
+  {
+    username: 'admin2',
+    password: 'password123',
+  },
+  {
+    username: 'admin3',
+    password: 'password123',
+  },
+  {
+    username: 'admin4',
+    password: 'password123',
+  },
+  {
+    username: 'admin5',
+    password: 'password123',
+  },
+];
+
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -15,10 +38,15 @@ export default function Login() {
   const handleLogin = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevents the page from refreshing when the form is submitted
 
-    // Check if the input matches our practice variables
-    if (username === MOCK_USERNAME && password === MOCK_PASSWORD) {
+    // Check if the input matches any user in our database
+    const isValidUser = userDb.some(
+      (user) => user.username === username && user.password === password
+    );
+
+    if (isValidUser) {
       setError('');
       // Redirect to a specific page upon successful login
+      sessionStorage.setItem('username', username);
       navigate('/dashboard');
     } else {
       setError('Invalid username or password');
